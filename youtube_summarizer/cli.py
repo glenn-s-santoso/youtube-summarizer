@@ -11,12 +11,13 @@ def main():
     
     # Get API key
     groq_api_key = os.getenv('GROQ_API_KEY')
-    if not groq_api_key:
-        print("Error: GROQ_API_KEY not found in environment variables")
+    openrouter_api_key = os.getenv('OPENROUTER_API_KEY')
+    if not groq_api_key or not openrouter_api_key:
+        print("Error: GROQ_API_KEY and OPENROUTER_API_KEY not found in environment variables")
         sys.exit(1)
     
     # Initialize summarizer
-    summarizer = YouTubeSummarizer(groq_api_key)
+    summarizer = YouTubeSummarizer(openrouter_api_key)
     
     # Get YouTube URL from user
     url = input("Enter YouTube video URL: ")

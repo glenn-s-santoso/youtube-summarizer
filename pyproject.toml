@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "youtube-summarizer"
 version = "0.1.0"
-description = "A YouTube video summarizer using Groq API"
+description = "A YouTube video summarizer using OpenRouter with DeepSeek V3"
 authors = ["Your Name <your.email@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
 youtube-transcript-api = "^0.6.1"
 groq = "^0.4.2"
+openai = "^1.12.0"
 python-dotenv = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]

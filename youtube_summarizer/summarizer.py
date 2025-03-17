@@ -1,10 +1,13 @@
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import YouTubeTranscriptApi
-from groq import Groq
+from openai import OpenAI
 
 class YouTubeSummarizer:
     def __init__(self, api_key):
-        self.groq_client = Groq(api_key=api_key)
+        self.client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=api_key,
+        )
     
     def get_video_id(self, url):
         """Extract video ID from YouTube URL."""
@@ -24,23 +27,23 @@ class YouTubeSummarizer:
             raise Exception(f"Failed to get transcript: {str(e)}")
     
     def summarize_text(self, text):
-        """Generate summary using Groq API."""
+        """Generate summary using OpenRouter API with DeepSeek V3."""
         prompt = f"""Please provide a concise summary of the following video transcript. 
-        Focus on the main points and key takeaways. Keep the summary clear and well-structured.
+        Focus on the main points and key takeaways. Keep the summary clear and well-structured. We understand that sometimes there are too detailed transcripts that seem like unimportant. In that case, if it still provides some context and help the user better understand, please include it.
         
         Transcript:
         {text}
         """
         
         try:
-            chat_completion = self.groq_client.chat.completions.create(
+            chat_completion = self.client.chat.completions.create(
                 messages=[
                     {
                         "role": "user",
                         "content": prompt
                     }
                 ],
-                model="llama-3.3-70b-versatile",
+                model="deepseek/deepseek-chat:free",
                 temperature=0.3,
             )
             return chat_completion.choices[0].message.content
